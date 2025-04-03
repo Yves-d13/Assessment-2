@@ -102,3 +102,60 @@ header h1 {
 .delete-btn {
   background-color: #f44336;
 }
+
+/* Apply dark mode to the entire page */
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* Ensure the app takes up full viewport */
+.app {
+  min-height: 100vh;
+  padding: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Apply dark mode to the app container */
+.dark-mode .app {
+  background-color: #121212;
+  color: white;
+}
+
+/* Dark mode for user cards */
+.dark-mode .user-card {
+  background-color: #333;
+  border: 1px solid #555;
+}
+
+/* Dark mode for inputs and buttons */
+.dark-mode input, .dark-mode button {
+  background-color: #444;
+  color: white;
+  border: 1px solid #666;
+}
+
+/* Dark mode for search bar */
+.dark-mode .search-bar {
+  background-color: #333;
+  color: white;
+  border: 1px solid #666;
+}
+
+/* Dark mode header */
+.dark-mode header {
+  background-color: #222;
+  padding: 15px;
+  border-bottom: 1px solid #444;
+}
+
+/* Dark mode for theme toggle button */
+.dark-mode .theme-toggle {
+  background-color: #555;
+  color: white;
+  border: 1px solid #777;
+}
+
+.dark-mode .theme-toggle:hover {
+  background-color: #777;
+}

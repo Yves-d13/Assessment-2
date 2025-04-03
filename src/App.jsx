@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 
 const initialUsers = [
@@ -21,40 +21,11 @@ const UserForm = ({ onSubmit, initialData = {} }) => {
 
   return (
     <form onSubmit={handleSubmit} className="user-form">
-      <input
-        type="text"
-        name="initials"
-        placeholder="Initials"
-        value={formData.initials || ''}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="name"
-        placeholder="Full Name"
-        value={formData.name || ''}
-        onChange={handleChange}
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={formData.email || ''}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="status"
-        placeholder="Status"
-        value={formData.status || ''}
-        onChange={handleChange}
-      />
-      <input
-        type="date"
-        name="dob"
-        value={formData.dob || ''}
-        onChange={handleChange}
-      />
+      <input type="text" name="initials" placeholder="Initials" value={formData.initials || ''} onChange={handleChange} />
+      <input type="text" name="name" placeholder="Full Name" value={formData.name || ''} onChange={handleChange} />
+      <input type="email" name="email" placeholder="Email" value={formData.email || ''} onChange={handleChange} />
+      <input type="text" name="status" placeholder="Status" value={formData.status || ''} onChange={handleChange} />
+      <input type="date" name="dob" value={formData.dob || ''} onChange={handleChange} />
       <button type="submit">Save</button>
     </form>
   );
@@ -80,6 +51,17 @@ const App = () => {
   const [users, setUsers] = useState(initialUsers);
   const [editingUser, setEditingUser] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Apply dark mode to <body> for full screen effect
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [darkMode]);
 
   const handleCreateUser = () => {
     setEditingUser(null);
@@ -105,17 +87,32 @@ const App = () => {
     setShowForm(false);
   };
 
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="app">
-                <header>
-              <h1>User Management</h1>
-              <div className="header-buttons">
-                <button className="create-user-btn" onClick={handleCreateUser}>Create User</button>
-                <button className="logout-btn">Logout</button>
-              </div>
-            </header>
+    <div className={`app ${darkMode ? 'dark-mode' : ''}`}>
+      <header>
+        <h1>User Management</h1>
+        <input
+          type="text"
+          placeholder="Search users..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-bar"
+        />
+        <div className="header-buttons">
+          <button className="create-user-btn" onClick={handleCreateUser}>Create User</button>
+          <button className="logout-btn">Logout</button>
+          <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
+            {darkMode ? '☀️' : '🌙'}
+          </button>
+        </div>
+      </header>
       <div className="user-list">
-        {users.map((user) => (
+        {filteredUsers.map((user) => (
           <UserCard key={user.id} user={user} onEdit={handleEdit} onDelete={handleDelete} />
         ))}
       </div>
